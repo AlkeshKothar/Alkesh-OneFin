@@ -159,3 +159,6 @@ SWAGGER_SETTINGS = {
       }
    }
 }
+
+
+STATIC_ROOT = BASE_DIR / 'static'
