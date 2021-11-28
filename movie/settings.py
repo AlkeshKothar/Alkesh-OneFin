@@ -80,11 +80,24 @@ WSGI_APPLICATION = 'movie.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'dbj19jt47b8795',
+       'USER': 'ccglsobrgrrfcu',
+       'PASSWORD': 'f5abb7bb501d6a60185fb78f633fa8792a1716f4b0ab12261a93947551a78413',
+       'HOST': 'ec2-23-23-219-25.compute-1.amazonaws.com',
+       'PORT': '5432',
+   }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
