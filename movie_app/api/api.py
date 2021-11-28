@@ -39,7 +39,7 @@ class RegisterApi(generics.GenericAPIView):
 class MovieView(APIView):
 
     def get(self, request, *args, **kwargs):
-        #permission_classes = [permissions.IsAuthenticated,]
+        #permission_classes = [IsAuthenticated]
         page_number = request.GET['page'] if 'page' in request.GET else None
         url = settings.MOVIE_API_URL if not page_number else "{}?page={}".format(settings.MOVIE_API_URL, page_number)
         user = settings.MOVIE_API_USER
