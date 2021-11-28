@@ -13,6 +13,7 @@ import os
 import django_heroku
 from pathlib import Path
 from datetime import timedelta
+import socket
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,9 +26,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-h4yv(v)^l&np6p&(l1)7-t-b4&$22%k6*h11csi%+ui%bbp602'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['onefinalkesh.herokuapp.com', 'localhost', '127.0.0.1']
+if 'heroku' in socket.gethostbyaddr(socket.gethostname())[0]: # Other domains can be added like this
+    DEBUG = False
+else:
+    DEBUG = True
+
+
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['.herokuapp.com']
+
+
 
 
 # Application definition
@@ -79,25 +90,26 @@ WSGI_APPLICATION = 'movie.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'dbj19jt47b8795',
-       'USER': 'ccglsobrgrrfcu',
-       'PASSWORD': 'f5abb7bb501d6a60185fb78f633fa8792a1716f4b0ab12261a93947551a78413',
-       'HOST': 'ec2-23-23-219-25.compute-1.amazonaws.com',
-       'PORT': '5432',
-   }
+
+if DEBUG:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get("DB_NAME"),
+            'USER': os.environ.get("DB_USER"),
+            'PASSWORD': os.environ.get("DB_PASSWORD"),
+            'HOST': os.environ.get("DB_HOST"),
+            'PORT': os.environ.get("DB_PORT")
+            }
+        }
+ 
 
 
 # Password validation
@@ -158,7 +170,8 @@ MOVIE_API_USER = 'iNd3jDMYRKsN1pjQPMRz2nrq7N99q4Tsp9EY9cM0'
 MOVIE_USER_PASS = 'Ne5DoTQt7p8qrgkPdtenTK8zd6MorcCR5vXZIJNfJwvfafZfcOs4reyasVYddTyXCz9hcL5FGGIVxw3q02ibnBLhblivqQTp4BIC93LZHj4OppuHQUzwugcYu7TIC5H1'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = '/static/'
 
 #Custom to change token span
 SIMPLE_JWT = {
@@ -178,7 +191,7 @@ SWAGGER_SETTINGS = {
 }
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 django_heroku.settings(locals())
